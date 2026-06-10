@@ -32,29 +32,32 @@ SEQUENCE_DETECTOR/
 │   └── waveform_1010.png
 ├── tb_sequence_detection.v     # Universal Testbench Suite
 └── README.md                   # Repository Documentation Matrix
+```
 
-🧠 Architectural Overview Matrix
+##🧠 Architectural Overview Matrix
 This project explores the critical trade-offs between hardware area and output timing response paths:
-Mealy Machines
+
+###Mealy Machines
 Behavior: The output is a function of both the current state and the current input.
 Hardware Advantage: Typically requires fewer states ($N$ states for an $N$-bit sequence) than Moore implementations, reducing register-cell allocation overhead.
 Timing Constraint: Outputs change asynchronously within the clock cycle if inputs glitch, requiring careful downstream registering.
 
-Moore Machines
+###Moore Machines
 Behavior: The output is strictly determined by the current state alone.Hardware 
 Advantage: Outputs are perfectly synchronous, stable, and glitch-free, locked cleanly to the clock edge.
 Design Trade-off: Requires an additional delay state ($N+1$ states for an $N$-bit sequence) to decode output activation.
 
-🔁 Sequence Handling Logic
-Overlapping Mode
+##🔁 Sequence Handling Logic
+
+###Overlapping Mode
 The detector does not clear its tracking registers upon a valid pattern match. It treats the trailing bits of a valid sequence as the prefix of the next incoming stream.
 Example Stream (1010): ...101010... evaluates to two separate match detections.
 
-Non-Overlapping Mode
+###Non-Overlapping Mode
 Upon a valid pattern match, the machine forces an internal state reset back to IDLE, completely flushing the tracking sequence pipeline.
 Example Stream (1010): ...101010... evaluates to one single match detection.
 
-💻 Simulation & Verification Flow
+##💻 Simulation & Verification Flow
 The design modules are verified via behavioral simulation targeting the Xilinx Vivado xsim runtime engine using the universal testbench tb_sequence_detection.v.
 
 To view wave configurations inside Vivado:
